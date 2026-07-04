@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>明日背包</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Tomorrow Backpack</p>
+          <h1>明日背包</h1>
+          <p class="hero-text">晚上打开一下，把明天要带的东西一项一项确认好。</p>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="主导航">
+        <button class="tab is-active" data-tab="tomorrow">明日</button>
+        <button class="tab" data-tab="week">一周</button>
+        <button class="tab" data-tab="settings">设定</button>
+      </nav>
+
+      <main class="views">
+        <section class="view is-active" id="tomorrow-view" data-view="tomorrow">
+          <div class="panel panel-accent">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker" id="target-label">明日视图</p>
+                <h2 id="target-day-text">明天要带这些</h2>
+              </div>
+              <div class="date-chip" id="target-date-chip"></div>
+            </div>
+            <div class="course-pills" id="tomorrow-course-pills"></div>
+            <div class="progress-row">
+              <span>整理进度</span>
+              <strong id="tomorrow-progress">0 / 0</strong>
+            </div>
+            <div class="checklist" id="tomorrow-checklist"></div>
+            <div class="empty-state hidden" id="tomorrow-empty">
+              这一天暂时没有需要准备的物品。
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">临时提醒</p>
+                <h3>今天老师特别交代</h3>
+              </div>
+              <button class="ghost-button" id="reset-tomorrow-checks">清空勾选</button>
+            </div>
+            <form class="inline-form" id="temporary-item-form">
+              <input
+                id="temporary-item-input"
+                type="text"
+                maxlength="60"
+                placeholder="例如：带报名表 / 交作业 / 带颜料"
+              />
+              <button type="submit" class="primary-button">新增</button>
+            </form>
+            <div class="small-note">临时项目只会加到这一天，不会改动原本课程模板。</div>
+          </div>
+        </section>
+
+        <section class="view" id="week-view" data-view="week">
+          <div class="section-heading">
+            <div>
+              <p class="panel-kicker">星期一到星期五</p>
+              <h2>一周安排</h2>
+            </div>
+            <p class="section-text">先看整周课程，再点开某一天检查物品。</p>
+          </div>
+          <div class="week-grid" id="week-grid"></div>
+        </section>
+
+        <section class="view" id="settings-view" data-view="settings">
+          <div class="setup-intro panel">
+            <p class="panel-kicker">第一次使用</p>
+            <h2>跟着这两个步骤就好</h2>
+            <div class="setup-steps">
+              <div class="setup-step">
+                <span class="step-number">1</span>
+                <div>
+                  <strong>先建立科目</strong>
+                  <p>例如数学、科学、华文，再填入每科固定要带的物品。</p>
+                </div>
+              </div>
+              <div class="setup-step">
+                <span class="step-number">2</span>
+                <div>
+                  <strong>再安排星期一到星期五</strong>
+                  <p>选一天、选科目、加入这一天，就完成了。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-layout">
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">步骤 1</p>
+                  <h2>先建立科目</h2>
+                  <p class="section-text">先建立科目，再把固定要带的物品放进去。</p>
+                </div>
+              </div>
+              <form class="stack-form" id="subject-form">
+                <label>
+                  科目名称
+                  <input id="subject-name-input" type="text" maxlength="30" placeholder="例如：数学" />
+                </label>
+                <label>
+                  固定物品
+                  <input
+                    id="subject-items-input"
+                    type="text"
+                    placeholder="用顿号、逗号或换行分开，例如：课本、练习本、计算机"
+                  />
+                </label>
+                <div class="form-actions">
+                  <button type="submit" class="primary-button">新增科目</button>
+                </div>
+              </form>
+              <div class="subject-list" id="subject-list"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <p class="panel-kicker">步骤 2</p>
+                  <h2>安排一周课程</h2>
+                  <p class="section-text">先选一天，再把科目加入。下面会自动整理成一周安排。</p>
+                </div>
+              </div>
+              <form class="schedule-quick-form" id="schedule-quick-form">
+                <label>
+                  选择星期
+                  <select id="schedule-day-select"></select>
+                </label>
+                <label>
+                  选择科目
+                  <select id="schedule-subject-select"></select>
+                </label>
+                <button type="submit" class="primary-button">加入这一天</button>
+              </form>
+              <div class="schedule-editor" id="schedule-editor"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="checklist-item-template">
+      <label class="check-item">
+        <input type="checkbox" />
+        <span class="check-box"></span>
+        <span class="check-copy">
+          <strong class="item-name"></strong>
+          <span class="item-meta"></span>
+        </span>
+        <button type="button" class="icon-button item-delete hidden" aria-label="删除">×</button>
+      </label>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
