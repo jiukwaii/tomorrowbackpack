@@ -3,42 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>后天背包</title>
+    <title>明日背包</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <div class="app-shell">
       <header class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Day After Tomorrow Backpack</p>
-          <h1>后天背包</h1>
-          <p class="hero-text">晚上打开一下，把后天要带的东西一项一项确认好。</p>
+          <p class="eyebrow">Tomorrow Backpack</p>
+          <h1>明日背包</h1>
+          <p class="hero-text">晚上打开一下，把明天要带的东西一项一项确认好。</p>
         </div>
       </header>
 
       <nav class="tabs" aria-label="主导航">
-        <button class="tab is-active" data-tab="day-after-tomorrow">后天</button>
+        <button class="tab is-active" data-tab="tomorrow">明日</button>
         <button class="tab" data-tab="week">一周</button>
         <button class="tab" data-tab="settings">设定</button>
       </nav>
 
       <main class="views">
-        <section class="view is-active" id="day-after-tomorrow-view" data-view="day-after-tomorrow">
+        <section class="view is-active" id="tomorrow-view" data-view="tomorrow">
           <div class="panel panel-accent">
             <div class="panel-header">
               <div>
-                <p class="panel-kicker" id="target-label">后天视图</p>
-                <h2 id="target-day-text">后天要带这些</h2>
+                <p class="panel-kicker" id="target-label">明日视图</p>
+                <h2 id="target-day-text">明天要带这些</h2>
               </div>
               <div class="date-chip" id="target-date-chip"></div>
             </div>
-            <div class="course-pills" id="day-after-tomorrow-course-pills"></div>
+            <div class="course-pills" id="tomorrow-course-pills"></div>
             <div class="progress-row">
               <span>整理进度</span>
-              <strong id="day-after-tomorrow-progress">0 / 0</strong>
+              <strong id="tomorrow-progress">0 / 0</strong>
             </div>
-            <div class="checklist" id="day-after-tomorrow-checklist"></div>
-            <div class="empty-state hidden" id="day-after-tomorrow-empty">
+            <div class="checklist" id="tomorrow-checklist"></div>
+            <div class="empty-state hidden" id="tomorrow-empty">
               这一天暂时没有需要准备的物品。
             </div>
           </div>
@@ -49,7 +49,7 @@
                 <p class="panel-kicker">临时提醒</p>
                 <h3>今天老师特别交代</h3>
               </div>
-              <button class="ghost-button" id="reset-day-after-tomorrow-checks">清空勾选</button>
+              <button class="ghost-button" id="reset-tomorrow-checks">清空勾选</button>
             </div>
             <form class="inline-form" id="temporary-item-form">
               <input

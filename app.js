@@ -1,4 +1,4 @@
-const STORAGE_KEY = "day-after-tomorrow-backpack";
+const STORAGE_KEY = "tomorrow-backpack-mvp";
 
 const weekDays = [
   { key: "monday", label: "星期一", short: "周一" },
@@ -34,13 +34,13 @@ const els = {
   targetLabel: document.getElementById("target-label"),
   targetDayText: document.getElementById("target-day-text"),
   targetDateChip: document.getElementById("target-date-chip"),
-  dayAfterTomorrowCoursePills: document.getElementById("day-after-tomorrow-course-pills"),
-  dayAfterTomorrowChecklist: document.getElementById("day-after-tomorrow-checklist"),
-  dayAfterTomorrowProgress: document.getElementById("day-after-tomorrow-progress"),
-  dayAfterTomorrowEmpty: document.getElementById("day-after-tomorrow-empty"),
+  tomorrowCoursePills: document.getElementById("tomorrow-course-pills"),
+  tomorrowChecklist: document.getElementById("tomorrow-checklist"),
+  tomorrowProgress: document.getElementById("tomorrow-progress"),
+  tomorrowEmpty: document.getElementById("tomorrow-empty"),
   temporaryItemForm: document.getElementById("temporary-item-form"),
   temporaryItemInput: document.getElementById("temporary-item-input"),
-  resetDayAfterTomorrowChecks: document.getElementById("reset-day-after-tomorrow-checks"),
+  resetTomorrowChecks: document.getElementById("reset-tomorrow-checks"),
   weekGrid: document.getElementById("week-grid"),
   subjectForm: document.getElementById("subject-form"),
   subjectNameInput: document.getElementById("subject-name-input"),
@@ -79,7 +79,7 @@ function bindEvents() {
     persistAndRender();
   });
 
-  els.resetDayAfterTomorrowChecks.addEventListener("click", () => {
+  els.resetTomorrowChecks.addEventListener("click", () => {
     const targetDateKey = getTargetDateInfo().dateKey;
     state.checkedItems[targetDateKey] = [];
     persistAndRender();
@@ -118,14 +118,14 @@ function bindEvents() {
 }
 
 function render() {
-  renderDayAfterTomorrowView();
+  renderTomorrowView();
   renderWeekView();
   renderSubjects();
   renderScheduleForm();
   renderScheduleEditor();
 }
 
-function renderDayAfterTomorrowView() {
+function renderTomorrowView() {
   const target = getTargetDateInfo();
   const subjectIds = state.schedule[target.dayKey] ?? [];
   const subjectNames = subjectIds
@@ -138,24 +138,24 @@ function renderDayAfterTomorrowView() {
   els.targetLabel.textContent = target.banner;
   els.targetDayText.textContent = `${target.dayLabel}要带这些`;
   els.targetDateChip.textContent = target.dateText;
-  els.dayAfterTomorrowProgress.textContent = `${completedCount} / ${checklistItems.length}`;
+  els.tomorrowProgress.textContent = `${completedCount} / ${checklistItems.length}`;
 
-  els.dayAfterTomorrowCoursePills.innerHTML = "";
+  els.tomorrowCoursePills.innerHTML = "";
   if (subjectNames.length > 0) {
     subjectNames.forEach((name) => {
       const pill = document.createElement("span");
       pill.className = "course-pill";
       pill.textContent = name;
-      els.dayAfterTomorrowCoursePills.appendChild(pill);
+      els.tomorrowCoursePills.appendChild(pill);
     });
   } else {
     const empty = document.createElement("p");
     empty.className = "course-empty";
-    empty.textContent = "后天目前没有课程，你也可以只添加临时项目。";
-    els.dayAfterTomorrowCoursePills.appendChild(empty);
+    empty.textContent = "明天目前没有课程，你也可以只添加临时项目。";
+    els.tomorrowCoursePills.appendChild(empty);
   }
 
-  els.dayAfterTomorrowChecklist.innerHTML = "";
+  els.tomorrowChecklist.innerHTML = "";
   checklistItems.forEach((item) => {
     const node = renderChecklistItem({
       item,
@@ -163,10 +163,10 @@ function renderDayAfterTomorrowView() {
       checked: checkedSet.has(item.id),
       allowDelete: item.type === "temporary",
     });
-    els.dayAfterTomorrowChecklist.appendChild(node);
+    els.tomorrowChecklist.appendChild(node);
   });
 
-  els.dayAfterTomorrowEmpty.classList.toggle("hidden", checklistItems.length > 0);
+  els.tomorrowEmpty.classList.toggle("hidden", checklistItems.length > 0);
 }
 
 function renderWeekView() {
@@ -571,23 +571,14 @@ function getTargetDateInfo() {
   const now = new Date();
   const day = now.getDay();
   const targetDate = new Date(now);
-  let banner = "后天视图";
+  let banner = "明日视图";
 
-  if (day >= 1 && day <= 3) {
-    targetDate.setDate(now.getDate() + 2);
-  } else if (day === 4 || day === 5 || day === 6 || day === 0) {
-    let daysUntilMonday;
-    if (day === 4) {
-      daysUntilMonday = 4;
-    } else if (day === 5) {
-      daysUntilMonday = 3;
-    } else if (day === 6) {
-      daysUntilMonday = 2;
-    } else {
-      daysUntilMonday = 1;
-    }
+  if (day >= 1 && day <= 4) {
+    targetDate.setDate(now.getDate() + 1);
+  } else if (day === 5 || day === 6 || day === 0) {
+    const daysUntilMonday = day === 5 ? 3 : day === 6 ? 2 : 1;
     targetDate.setDate(now.getDate() + daysUntilMonday);
-    banner = day === 5 ? "周六晚自动切到下周一" : "下一次上课日";
+    banner = day === 5 ? "周五晚自动切到下周一" : "下一次上课日";
   }
 
   const dayIndex = convertJsDayToWeekIndex(targetDate.getDay());
